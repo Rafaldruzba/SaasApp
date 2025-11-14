@@ -1,0 +1,10 @@
+.landing-page-background {
+	background: #1bf2a0;
+	background: linear-gradient(38deg, rgba(27, 242, 160, 0.65) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.phone-img {
+	transform: scaleX(-1);
+	transform: rotateY(180deg);
+	rotate: -5deg;
+}
