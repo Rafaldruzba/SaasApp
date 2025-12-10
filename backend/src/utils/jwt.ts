@@ -5,10 +5,9 @@ if (!process.env.JWT_SECRET) {
 }
 
 const secret = process.env.JWT_SECRET
-const EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h'
 
 export const createAccessToken = (payload: object) => {
-	const token = jwt.sign(payload, secret, { expiresIn: '24h' })
+	const token = jwt.sign(payload, secret, { expiresIn: '1h' })
 	return token
 }
 

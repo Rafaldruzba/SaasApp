@@ -3,7 +3,6 @@ declare namespace NodeJS {
 		PORT?: string
 
 		JWT_SECRET: string
-		JWT_EXPIRES_IN?: string
 
 		// Możesz dodać tu kolejne zmienne, jeśli będziesz ich używać:
 		// DATABASE_URL?: string;

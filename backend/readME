@@ -1,0 +1,7 @@
+server i app - podstawa servera
+w folderze routes zapisujemy trasy
+baza danych jest w db/index.ts
+
+jak tworzymy endpointy:
+1. tworzymy trase oraz folder w controllers
+2. piszemy kod, sqla zapisujemy w userRepository w folderze db
