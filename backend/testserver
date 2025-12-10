@@ -1,0 +1,52 @@
+const express = require('express')
+const app = express()
+const http = require('http')
+const server = http.createServer(app)
+const io = require('socket.io')(server, {
+	cors: {
+		origin: ['http://localhost:3000', 'http://localhost:5000'],
+		methods: ['GET', 'POST'],
+	},
+})
+
+// CORS dla portów
+app.use(
+	cors({
+		origin: ['http://localhost:3000', 'http://localhost:5000'], // dodaj wszystkie dozwolone origins
+		methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], // Dozwolone metody HTTP
+		allowedHeaders: ['Content-Type', 'Authorization'], // Dozwolone nagłówki
+		credentials: true,
+	})
+)
+// Middleware
+app.use(express.json()) // Parsowanie JSON w treści żądań
+
+// Dodaj kompresję
+app.use(compression())
+
+// Trasy API
+const authRoutes = require('./routes/userRoutes') // Trasy użytkowników
+
+app.use('/api/auth', authRoutes) // Trasy użytkowników
+
+//DEAFAULT ENDPOINT
+app.get('/', (req, res) => {
+	res.send({ message: 'Serwer działa poprawnie!' })
+})
+
+// Obsługa braku endpointów
+app.use((req, res, next) => {
+	res.status(404).json({ message: 'Endpoint not found' })
+})
+
+// Obsługa błędów serwera
+app.use((err, req, res, next) => {
+	console.error(err.stack)
+	res.status(500).json({ message: 'Server error' })
+})
+
+// Uruchomienie serwera
+const PORT = process.env.PORT || 5000
+server.listen(PORT, () => {
+	console.log(`Serwer działa na porcie ${PORT}`)
+})

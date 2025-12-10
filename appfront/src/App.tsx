@@ -1,5 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import ProtectedRoute from './components/ProtectedRoute'
 
+import Login from './Pages/Login'
 import Home from './Pages/Home'
 import Sidebar from './components/Sidebar'
 import InfoSidebar from './components/InfoSidebar'
@@ -10,33 +13,72 @@ import Notifications from './Pages/Notifications'
 
 function App() {
 	return (
-		<>
+		<AuthProvider>
 			<div className='flex'>
-				<Sidebar />
-				<main className="ml-[200px] mr-[250px] flex-1 p-6">
+				{/* Sidebar widoczny tylko kiedy user ma token */}
+				<ProtectedRoute>
+					<Sidebar />
+				</ProtectedRoute>
 
-				<Routes>
-					{/* Strona główna */}
-					<Route path='/' element={<Home />} />
+				<main className='ml-[200px] mr-[250px] flex-1 p-6'>
+					<Routes>
+						<Route path='/login' element={<Login />} />
 
-					{/* Podstrony */}
-          			{/* <Route path="/users" element={<Users />} /> */}
-          			<Route path="/settings" element={<Settings />} />
-          			<Route path="/reports" element={<Reports />} />
-          			{/* <Route path="/analytics" element={<Analytics />} /> */}
-          			<Route path="/messages" element={<Messages />} />
-          			<Route path="/notifications" element={<Notifications />} />
-          			{/* <Route path="/logout" element={<Logout />} /> */}
+						{/* Chronione trasy: */}
+						<Route
+							path='/'
+							element={
+								<ProtectedRoute>
+									<Home />
+								</ProtectedRoute>
+							}
+						/>
 
+						<Route
+							path='/settings'
+							element={
+								<ProtectedRoute>
+									<Settings />
+								</ProtectedRoute>
+							}
+						/>
 
-					{/* 404 */}
-					<Route path='*' element={<div className='p-10 text-center'>404 — Page not found</div>} />
-				</Routes>
+						<Route
+							path='/reports'
+							element={
+								<ProtectedRoute>
+									<Reports />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							path='/messages'
+							element={
+								<ProtectedRoute>
+									<Messages />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							path='/notifications'
+							element={
+								<ProtectedRoute>
+									<Notifications />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route path='*' element={<div className='p-10 text-center'>404 — Page not found</div>} />
+					</Routes>
 				</main>
-				<InfoSidebar />
 
+				<ProtectedRoute>
+					<InfoSidebar />
+				</ProtectedRoute>
 			</div>
-		</>
+		</AuthProvider>
 	)
 }
 
